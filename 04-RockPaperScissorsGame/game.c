@@ -1,23 +1,32 @@
-/*### Rock Paper Scissors Game
-
-Create a rock-paper-scissors game.
-
-- Ask the player to pick rock, paper or scissors.
-- Have the computer chose its move.
-- Compare the choices and decide who wins.
-- Print the results.
-
-Subgoals:
-
-- Give the player the option to play again.
-- Keep a record of the score (e.g. Player: 3 / Computer: 6).
-
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
+int random_int(int start, int stop);
+
+int main()
+{
+    int playing_game = 0;
+    int player_score;
+    char user_input[64] = {0};
+    int computer_score;
+
+    printf("ROCK PAPER SCICCORS!\n");
+    printf("********************\n");
+
+    do{
+        // ask player for a choice
+        printf("[0]: Rock\n[1]: Paper\n[2]: Scissors\n");
+        scanf("Your selection: %s", user_input);
+
+        printf("You selected: %s\n", user_input);
+        // select pc choide
+        // determine winner
+        // ask to play again
+
+    }while(playing_game);
+    return 0;
+}
 
 int random_int(int start, int stop)
 {
@@ -25,7 +34,6 @@ int random_int(int start, int stop)
 
     if(!seeded){
         srand(time(NULL));
-        seeded = 1;
     }
 
     int range = stop - start + 1;
@@ -38,12 +46,3 @@ int random_int(int start, int stop)
 
     return start + (r % range);
 }
-
-int main()
-{
-    int player_score;
-    int computer_score;
-    return 0;
-}
-
-
