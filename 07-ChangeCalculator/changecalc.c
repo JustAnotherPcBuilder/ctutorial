@@ -9,9 +9,11 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 void print_change(int big, int small);
 int verify_input(char *input, int *big, int *small);
+int is_numerical(char *str);
 
 int main()
 {
@@ -37,11 +39,42 @@ int main()
 
 int verify_input(char *input, int *big, int *small)
 {
+	int count = 0;
+	char *str;
+	while((str = strtok(input, ".")) != NULL){
+		switch(count){
+			case 0:
+				if(!is_numerical(str))
+					return 1;
+				*big = atoi(str);
+				break;
+			case 1:
+				if(!is_numerical(str))
+					return 1;
+				*small = atoi(str);
+				break;
+			default:
+				return 1;
+		}
+	}
     return 0;
+}
+
+int is_numerical(char *str)
+{
+	int i = 0;
+	int c;
+	while((c = str[i]) != '\0'){
+		if(c < '0' || c > '9')
+			return 1;
+		i++;
+	}
+	return 0;
 }
 
 void print_change(int big, int small)
 {
-
+	printf("Dollars: %d\n", big);
+	printf("Cents: %d\n", small);
 }
 
