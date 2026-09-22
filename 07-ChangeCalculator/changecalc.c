@@ -19,7 +19,8 @@ bool is_numerical(char *str);
 int main()
 {
     char input[64] = {0};
-    int big, small;
+    int big = 0;
+	int small = 0;
 
     while(1){
         printf("Enter Quantity (or q to quit): ");
@@ -76,7 +77,44 @@ bool is_numerical(char *str)
 
 void print_change(int big, int small)
 {
-	printf("Dollars: %d\n", big);
-	printf("Cents: %d\n", small);
+	int div;
+
+	if((div = big/100) > 0){
+		big %= 100;
+		printf("%d 100-Dollar Bill(s).\n", div);
+	}
+	if((div = big/20) > 0){
+		big %= 20;
+		printf("%d 20-Dollar Bill(s).\n", div);
+	}
+	if((div = big/10) > 0){
+		big %= 10;
+		printf("%d 10-Dollar Bill(s).\n", div);
+	}
+	if((div = big/5) > 0){
+		big %= 5;
+		printf("%d 5-Dollar Bill(s).\n", div);
+	}
+	if(big > 0){
+		printf("%d 1-Dollar Bill(s).\n", big);
+	}
+	if((div = small/25) > 0){
+		small %= 25;
+		printf("%d Quarter(s).\n", div);
+	}
+	if((div = small/10) > 0){
+		small %= 10;
+		printf("%d Dime(s).\n", div);
+	}
+	if((div = small/5) > 0){
+		small %= 5;
+		printf("%d Nickel(s).\n", div);
+	}
+	if(small > 1){
+		printf("%d Pennies.\n", small);
+	}else if(small == 1){
+		printf("%d Penny.\n", small);
+	}
+
 }
 
