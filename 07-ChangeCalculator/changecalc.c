@@ -41,22 +41,23 @@ int main()
 bool verify_input(char *input, int *big, int *small)
 {
 	int count = 0;
-	char *str;
-	while((str = strtok(input, ".")) != NULL){
+	char *tok = strtok(input, ".");
+	while(tok != NULL){
 		switch(count++){
 			case 0:
-				if(!is_numerical(str))
+				if(!is_numerical(tok))
 					return false;
-				*big = atoi(str);
+				*big = atoi(tok);
 				break;
 			case 1:
-				if(!is_numerical(str))
+				if(!is_numerical(tok))
 					return false;
-				*small = atoi(str);
+				*small = atoi(tok);
 				break;
 			default:
 				return false;
 		}
+		tok = strtok(NULL, ".");
 	}
     return true;
 }
