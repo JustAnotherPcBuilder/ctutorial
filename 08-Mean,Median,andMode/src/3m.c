@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <math.h>
 #include <stdio.h>
 
 #include "3m.h"
@@ -27,7 +26,12 @@ double mean(int count, int *list, int round){
     if(round < 0)
         round = 0;
 
-    double p = pow(10, round);
+	double p = 1;
+	int exp = round;
+	while(exp > 0){
+		p *= 10;
+		exp--;
+	}
     int sum = 0;
 
     for(int i = 0; i < count; i++){
@@ -66,7 +70,7 @@ int mode(m_mode_t *mode, int count, int *list){
     if(!mode)
         return -1;
 
-	if(count < 1)
+    if(count < 1)
 		return -1;
 
 	int prev, cur, n, index, largest;
