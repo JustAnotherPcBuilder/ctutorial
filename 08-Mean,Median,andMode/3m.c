@@ -1,17 +1,10 @@
 #include <stdlib.h>
 #include <math.h>
+#include <stdio.h>
 
-typedef struct{
-    int count;
-    int *list;
-}m_mode_t;
+#include "3m.h"
 
-typedef struct{
-    int count;
-    int list[2];
-}m_median_t;
-
-int __compare_int(const void *arg1, const void arg2){
+int __compare_int(const void *arg1, const void *arg2){
     int a = *(const int *)arg1;
     int b = *(const int *)arg2;
     if(a < b)
@@ -68,22 +61,6 @@ int median(m_median_t *median, int count, int *list){
     return 0;
 }
 
-/*
- * mode
- * ***************************************************************
- * @brief		returns the mode of an int array
- * 
- * @param mode	A pointer to a m_mode_t struct where the values 
- *				will be saved to.
- *
- * @param count	The length of the list
- *
- * @param list	A pointer to the array containing the list of ints
- *
- * @return		0 when successful
- *				-1 when error
- * ***************************************************************
- */
 int mode(m_mode_t *mode, int count, int *list){
 
     if(!mode)
