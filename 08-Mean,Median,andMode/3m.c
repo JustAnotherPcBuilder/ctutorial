@@ -68,17 +68,84 @@ int median(m_median_t *median, int count, int *list){
     return 0;
 }
 
+/*
+ * mode
+ * ***************************************************************
+ * @brief		returns the mode of an int array
+ * 
+ * @param mode	A pointer to a m_mode_t struct where the values 
+ *				will be saved to.
+ *
+ * @param count	The length of the list
+ *
+ * @param list	A pointer to the array containing the list of ints
+ *
+ * @return		0 when successful
+ *				-1 when error
+ * ***************************************************************
+ */
 int mode(m_mode_t *mode, int count, int *list){
 
     if(!mode)
         return -1;
 
-    void *mem = malloc(count * sizeof(int[2]));
+	if(count < 1)
+		return -1;
 
-    if(!mem)
-        return -1;
+	int prev, cur, n, index, largest;
 
-    for(int = 0; i < count; i)
+	// Need to account for the possibility that all elements are different
+	int *tracker = calloc(count, sizeof(int));
 
+	if(!tracker){
+		perror("calloc");
+		return -1;
+	}
+
+	// Sort the array to avoid the use of a hashmap
+    qsort(list, count, sizeof(int), __compare_int);
+
+	prev = list[0];
+	index = n = largest = 1;
+	tracker[0] = prev;
+
+	// Track all instances, saving highest occurrence(s)
+	for(int i = 1; i < count; i++){
+		cur = list[i];
+
+		if(cur == prev)
+			n++;
+		else
+			n = 1;
+
+		if(n == largest){
+			// Add to tracker
+			tracker[index] = cur;
+			index++;
+
+		}else if(n > largest){
+			// Reset tracker
+			index = 1;
+			tracker[0] = cur;
+			largest = n;
+		}
+
+		prev = cur;
+	}
+
+	// Allocate the array for the mode list
+	mode->count = index;
+	mode->list = malloc(sizeof(int) * index);
+	if(!mode->list){
+		perror("malloc mode->list");
+		free(tracker);
+		return -1;
+	}
+
+	for(int i = 0; i < index; i++){
+		mode->list[i] = tracker[i];
+	}
+	
+	free(tracker);
     return 0;
 }
