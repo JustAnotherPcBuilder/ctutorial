@@ -1,0 +1,58 @@
+.SECONDARY:
+
+CC = gcc
+CFLAGS = -Wall -g -Iinclude
+
+BIN_DIR  := bin
+SRC_DIR  := src
+OBJ_DIR  := obj
+TEST_DIR := tests
+
+EXECUTABLES := ccompiler
+
+#TARGETS := $(filter-out $(EXECUTABLES) , $(notdir $(wildcard $(SRC_DIR)/*)))
+TARGETS := $(notdir $(wildcard $(SRC_DIR)/*))
+TEST_TARGETS := $(addprefix test-, $(TARGETS))
+LOG_TARGETS := $(addprefix log-, $(TARGETS))
+
+.PHONY: all build print clean test log
+
+all:
+	$(MAKE) clean
+	$(MAKE) build
+	$(MAKE) test
+	$(MAKE) log
+
+build: $(addprefix $(BIN_DIR)/, $(EXECUTABLES))
+
+lib: $(addprefix $(LIB_DIR)/, $(TARGETS))
+
+clean:
+	rm -rf $(BIN_DIR) $(OBJ_DIR) $(LIB_DIR)
+
+test: $(TEST_TARGETS)
+
+log: $(LOG_TARGETS)
+
+$(BIN_DIR)/%: $(addprefix $(OBJ_DIR)/, $(TARGETS))
+	@mkdir -p $(BIN_DIR)
+	$(CC) $(CFLAGS) $(OBJ_DIR)/*/* -o $@
+
+$(OBJ_DIR)/%: $(SRC_DIR)/%
+	@mkdir -p $@
+	@for file in $</*.c; do \
+		name=$$(basename $$file .c); \
+		$(CC) $(CFLAGS) -c $$file -o $@/$$name.o; \
+	done
+	
+test-%: $(BIN_DIR)/%
+	@if [ -f "$(TEST_DIR)/$*.sh" ]; then \
+	$(TEST_DIR)/$*.sh; fi
+
+log-%: $(BIN_DIR)/% 
+	@if [ -f "$(TEST_DIR)/$*.log" ]; then \
+	cat "$(TEST_DIR)/$*.log" 2> /dev/null; fi
+
+print:
+	@echo "Targets: $(TARGETS)"
+	@echo "Executables: $(EXECUTABLES)"
