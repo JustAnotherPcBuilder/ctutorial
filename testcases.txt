@@ -1,0 +1,22 @@
+typedef struct {
+    const char *name;
+    int *input;
+    int input_len;
+    int expected_sum;
+} SumTestCase;
+
+SumTestCase tests[] = {
+    { "empty",    (int[]){},           0, 0  },
+    { "single",   (int[]){5},          1, 5  },
+    { "multiple", (int[]){1,2,3,4,5},  5, 15 },
+};
+
+int num_tests = sizeof(tests) / sizeof(tests[0]);
+
+for (int i = 0; i < num_tests; i++) {
+    int actual = sum_array(tests[i].input, tests[i].input_len);
+    printf("%-10s: %s (got %d, expected %d)\n",
+           tests[i].name,
+           actual == tests[i].expected_sum ? "PASS" : "FAIL",
+           actual, tests[i].expected_sum);
+}
