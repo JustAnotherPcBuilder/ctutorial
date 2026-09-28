@@ -13,12 +13,6 @@ int __compare_int(const void *arg1, const void *arg2){
     return 0;
 }
 
-void free_mode_t(m_mode_t *p){
-    if(p != NULL){
-        free(p);
-    }
-}
-
 double mean(int count, int *list, int round){
     if(count < 1)
         return 0;
