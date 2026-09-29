@@ -48,13 +48,13 @@ int median(m_median_t *median, int count, int *list){
     // Sort list
     qsort(list, count, sizeof(int), __compare_int);
 
-    if(count % 2 == 0){
+    if(count % 2 == 1){
         median->count = 1;
         median->list[0] = list[(int) count / 2];
     }else{
         median->count = 2;
         median->list[1] = list[(int) count / 2];
-        median->list[0] = list[(int) (count / 2 - 1)];
+        median->list[0] = list[((int) (count / 2)) - 1];
     }
     return 0;
 }
