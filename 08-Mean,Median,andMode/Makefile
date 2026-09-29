@@ -2,7 +2,7 @@
 .NOTPARALLEL: all
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wno-error=misleading-indentation -g -Iinclude
+CFLAGS = -Wall -Werror -Wno-misleading-indentation -g -Iinclude
 
 BIN_DIR := bin
 SRC_DIR := src
