@@ -25,7 +25,8 @@ int random_int(int start, int stop);
 bool valid_user_input(int *guess);
 bool valid_user_continue(bool *playing);
 
-int main(){
+int main()
+{
 
     g_status_t game = {G_STATE_START, 0, 0, 0, true};
     char *msg;
@@ -39,8 +40,11 @@ int main(){
                 break;
 
             case G_STATE_USER_INPUT:
+                printf("Enter a number between 1-100: ");
                 if(valid_user_input(&(game.player)))
                     game.state = G_STATE_COMPARE;
+                else
+                    printf("Invalid input.\n");
                 break;
 
             case G_STATE_COMPARE:
@@ -56,13 +60,16 @@ int main(){
                 break;
 
             case G_STATE_UPDATE_SCORE:
-                printf("Congrats! You guessed correctly!\nYour score: %d\n", game.score);
+                printf("Congrats! You guessed correctly!\nYour score: %d\n", ++(game.score));
                 game.state = G_STATE_PLAY_AGAIN;
                 break;
 
             case G_STATE_PLAY_AGAIN:
+                printf("Play again?(y/n)\n");
                 if(valid_user_continue(&game.playing))
                     game.state = G_STATE_START;
+                else
+                    printf("Invalid input.\n");
                 break;
 
             default:
@@ -95,12 +102,51 @@ int random_int(int start, int stop)
     return start + (r % range);
 }
 
-bool valid_user_input(int *guess){
+bool valid_user_input(int *guess)
+{
+    char buffer[4] = {0};
+    bool valid = true;
+    int c;
+    int n = 0;
 
-    return true;
+    // Read an entire line; guarantee all input is digit and <= 3 chars
+    while((c = getchar()) != '\n' && c != EOF){
+        if(valid){
+            buffer[n++] = (char) c;
+            if(c < '0' || c > '9' || n > 3)
+                valid = false;
+        }
+    }
+
+    if(!valid || n == 0)
+        return false;
+
+    *guess = atoi(buffer);
+    return (*guess > 0 && *guess < 101);
 }
 
-bool valid_user_continue(bool *playing){
+bool valid_user_continue(bool *playing)
+{
+    char ch;
+    int c;
+    int n = 0;
 
-    return true;
+    // Read an entire line; guarantee y/n answer
+    while((c = getchar()) != '\n' && c != EOF){
+        if(n++ == 0)
+            ch = c;
+    }
+
+    if(n == 0 || n > 1)
+        return false;
+    
+    if(ch == 'y' || ch == 'Y')
+        return true;
+
+    if(ch == 'n' || ch =='N'){
+        *playing = false;
+        return true;
+    }
+
+    return false;
 }
