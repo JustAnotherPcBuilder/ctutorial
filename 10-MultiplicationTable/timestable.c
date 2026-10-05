@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#define TABLE_MAX_STR_LEN 10
+#define TABLE_MAX 4294967296
+
 // Using struct to save information to reduce 
 typedef struct{
     uint64_t size;
@@ -15,10 +18,11 @@ typedef struct{
 // larger than 4294967296 will overflow when squared.
 const int limits[] =
 {
-    3, 9, 31, 99, 316, 999, 3162, 9999, 
-    31622, 99999, 316227, 999999, 3162277, 
+    3, 9, 31, 99, 316, 999, 3162,     9999, 
+    31622, 99999, 316227, 999999,  3162277, 
     9999999, 31622776, 99999999, 316227766, 
-    999999999, 3162277660, 9999999999, 3162277660, 4294967296
+    999999999, 3162277660,      9999999999, 
+    3162277660, TABLE_MAX
 };
 
 bool valid_user_input(table_t *table);
@@ -52,16 +56,17 @@ int main(){
 bool valid_user_input(table_t *table)
 {
     // Hard limit set to 1000x1000 table for funsies
-    char buffer[5] = {0};
+    int buffer_max = TABLE_MAX_STR_LEN + 1;
+    char buffer[buffer_max] = {0};
     bool valid = true;
     int c;
     int n = 0;
 
-    // Read an entire line; guarantee all input is digit and <= 3 chars
+    // Read an entire line; guarantee all input is digit and <= max size
     while((c = getchar()) != '\n' && c != EOF){
         if(valid){
             buffer[n++] = (char) c;
-            if(c < '0' || c > '9' || n > 4)
+            if(c < '0' || c > '9' || n > buffer_max)
                 valid = false;
         }
     }
@@ -71,7 +76,7 @@ bool valid_user_input(table_t *table)
 
     table->size = atoi(buffer);
     table->max = strlen(buffer);
-    return (table->size > 0 && table->size < 1001);
-}
 
+    return (table->size < TABLE_MAX);
+}
 
