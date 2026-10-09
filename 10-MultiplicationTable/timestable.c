@@ -25,8 +25,14 @@ int main(){
         printf("Invalid Entry.\n");
     }while(1);
 
-    printf("Your value: %d\n", table.size);
+    for(int j = 1; j < table.size + 1; j++){
+        for(int i = 1; i < table.size + 1 ; i++){
 
+            printf("|%*d", table.padding, j * i);
+        }
+        printf("|\n");
+    }
+ 
     return 0;
 }
 
@@ -53,6 +59,6 @@ bool valid_user_input(table_t *table)
         return false;
 
     table->size = atoi(buffer);
-    table->padding = strlen(buffer);
+    table->padding = strlen(buffer) * 2;
     return (table->size < 1001);
 }
