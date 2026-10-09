@@ -5,8 +5,7 @@
 
 // Using struct to save information to reduce 
 typedef struct{
-    uint64_t size;
-    uint64_t max;
+    int size;
     int padding;
 }table_t;
 
@@ -25,16 +24,7 @@ int main(){
         printf("Invalid Entry.\n");
     }while(1);
 
-    printf("Your value: %d\n", table_size);
-
-    // Calculate max width
-    int max = table_size*table_size + 2;
-    int len = 0;
-    while(max > 0){
-        max /= 10;
-        len++;
-    }
-    // print table
+    printf("Your value: %d\n", table.size);
 
     return 0;
 }
@@ -60,8 +50,6 @@ bool valid_user_input(table_t *table)
         return false;
 
     table->size = atoi(buffer);
-    table->max = strlen(buffer);
+    table->padding = strlen(buffer);
     return (table->size < 1001);
 }
-
-
