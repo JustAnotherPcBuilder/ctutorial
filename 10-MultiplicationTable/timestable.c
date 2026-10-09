@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 
 // Using struct to save information to reduce 
 typedef struct{
@@ -40,6 +41,8 @@ bool valid_user_input(table_t *table)
     // Read an entire line; guarantee all input is digit and <= 3 chars
     while((c = getchar()) != '\n' && c != EOF){
         if(valid){
+            if(n == 0 && c == '0')
+                continue;
             buffer[n++] = (char) c;
             if(c < '0' || c > '9' || n > 4)
                 valid = false;
