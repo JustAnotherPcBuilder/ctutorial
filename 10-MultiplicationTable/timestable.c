@@ -10,17 +10,6 @@ typedef struct{
     int padding;
 }table_t;
 
-// This array keeps track of the maximum values for the required 
-// length of each cell. This is limited by uint64_t values; any value 
-// larger than 4294967296 will overflow when squared.
-const int limits[] =
-{
-    3, 9, 31, 99, 316, 999, 3162, 9999, 
-    31622, 99999, 316227, 999999, 3162277, 
-    9999999, 31622776, 99999999, 316227766, 
-    999999999, 3162277660, 9999999999, 3162277660, 4294967296
-};
-
 bool valid_user_input(table_t *table);
 
 int main(){
