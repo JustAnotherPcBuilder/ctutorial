@@ -10,6 +10,7 @@ typedef struct{
     int padding;
 }table_t;
 
+
 bool valid_user_input(table_t *table);
 
 int main(){
@@ -60,7 +61,7 @@ bool valid_user_input(table_t *table)
 
     table->size = atoi(buffer);
     table->max = strlen(buffer);
-    return (table->size > 0 && table->size < 1001);
+    return (table->size < 1001);
 }
 
 
