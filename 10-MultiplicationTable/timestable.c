@@ -23,6 +23,29 @@ const uint64_t limits[] = {
     3162277660, TABLE_MAX 
 };
 
+enum DigitLength{
+    DIGIT_ONE,
+    DIGIT_TWO,
+    DIGIT_THREE,
+    DIGIT_FOUR,
+    DIGIT_FIVE,
+    DIGIT_SIX,
+    DIGIT_SEVEN,
+    DIGIT_EIGHT,
+    DIGIT_NINE,
+    DIGIT_TEN,
+    DIGIT_ELEVEN,
+    DIGIT_TWELVE,
+    DIGIT_THIRTEEN,
+    DIGIT_FOURTEEN,
+    DIGIT_FIFTEEN,
+    DIGIT_SIXTEEN,
+    DIGIT_SEVENTEEN,
+    DIGIT_EIGHTEEN,
+    DIGIT_NINETEEN,
+    DIGIT_TWENTY
+};
+
 bool valid_user_input(table_t *table);
 
 int main(){
@@ -42,9 +65,15 @@ int main(){
     return 0;
 }
 
+// Simple loop to calculate memory per string.
 void build_string(table_t *table)
 {
-    
+    uint64_t current_limit = limits[0];
+    for(int i = 0; i < table->len; i++){
+
+
+    }
+    switch()
 }
 
 bool valid_user_input(table_t *table)
