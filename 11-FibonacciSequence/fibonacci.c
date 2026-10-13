@@ -1,4 +1,5 @@
-#include <stdint.h>
+#include <stdarg.h>
+#include <stdio.h>
 
 int fib_loop(int n){
     int fib = 1;
