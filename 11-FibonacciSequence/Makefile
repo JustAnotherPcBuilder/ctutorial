@@ -27,4 +27,5 @@ print:
 
 clean:
 	rm -rf $(TARGETS) 
+	rm -rf *dSYM
 

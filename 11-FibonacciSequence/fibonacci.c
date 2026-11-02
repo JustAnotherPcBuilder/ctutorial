@@ -46,38 +46,28 @@ int fib_rec(int n, ...)
     static bool first = true;
     int fib = 1;
     int prev = 0;
-    int temp;
 
     if(!first){
         va_list args;
 
-        temp = n;
-        n = 2;
         va_start(args, n);
-        n = temp;
 
         fib = va_arg(args, int);
         prev = va_arg(args, int);
-        temp = fib;
-        if(n == 0)
+        if(n == 1)
             return fib + prev;
 
     }else{
-        if(n == 0)
-            return 0;
+        first = false;
+        if(n == 1)
+            return 1;
     }
 
-    first = false;
 
-    fib += prev;
-    prev = temp;
+    if(n == 1)
+        return fib + prev;
 
-    n--;
-
-    if(n == 0)
-        return fib;
-
-    return fib_rec(n, fib, prev);
+    return fib_rec(n - 1, fib + prev, fib);
 }
 
 bool valid_user_input(int *num)
