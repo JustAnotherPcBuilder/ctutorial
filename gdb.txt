@@ -1,0 +1,202 @@
+gdb debugger
+
+run gdb ./program to start the debugger
+Note: this will only work if compiled using the debug option (-g) when compiling.
+
+terms
+-----
+     location: 
+          a specific place of interest. This can be the a specific file and line 
+          number, or a function/label.
+          When using a label, gdb is smart enough to find the first instance/declaration
+          of the label and use that as the location.
+
+          i.e. server.c:42    this is line 42 on file server.c
+          i.e. func1          this is the first instance of func1.
+
+     expression: 
+          A C expression to be evaluated in the context of the current stack frame.
+
+          Types of expressions:
+               Variable
+                    i.e. check when variable 'count' changes
+                         watch count
+               Logical
+                    i.e. check when variable is greater than 10
+                         condition 2 x > 10
+               Array Indexing
+                    i.e. read element i of array
+                         watch arr[i]
+               Struct member access
+                    i.e. print p->next->id
+               Arithmetic
+                    i.e. print when i plus j times 4 
+                    print i + j * 4
+               Type case + division
+                    i.e. print the float casted value of ptr (a void * ptr)
+                    print (MyStruct *)ptr
+               Dereference               
+                    i.e. print typecasted dereference to MyStruct ptr (void * ptr)
+                    print *((MyStruct *)ptr)
+               Function Call
+                    i.e. print the output of a function
+                    print strlen(name)
+               Address of
+                    i.e. print whether a and b have the same address (0 yes, 1 no)
+                    print &a == &b
+
+          for variables (multiple variables) you can specify which one using ::
+               i.e lets say you have var in func1 and main
+               1. you are in main and var is there; print var will print the main var
+               2. if you are in func1, print var will print the func1 var
+               3. if you want to print main var from func1, use main()::var
+               4. if you have another var, lets say global(outside main) use ::var to reach it
+
+     
+     break num:
+          gdb assigns breakpoints numbers. This will be a break point's specific number.
+
+
+breaks/conditional stops
+------------------------
+break <location>
+     
+     creates a breakpoint at the specified location. If the break point is used with 
+     a function/label BEFORE run, it will find the first declaration of the function/
+     label. If multiple instances are found, then it will prompt a selection of the 
+     multiple instances found.
+
+tbreak <location>
+
+     creates a temporary breakpoint at the specified location. This will automatically
+     delete after it is reached.
+
+condition <break num> <expression>
+
+     this will set a condition on an existing breakpoint (break num) if the expression
+     is met:
+
+     i.e. condition 2 x < 5  (breakpoint 2 will only stop when the variable x is less than 5)
+
+watch <expr>
+
+     stops when the given expression's value changes.
+
+     i.e. watch count (stops when the variable -count- value changes)
+
+rwatch <expr>
+
+     stops when the given expression is read.
+
+     i.e. rwatch buffer (stops when the buffer variable is read)
+
+awatch <expr>
+
+     stops when the given expression is read or written
+
+catch <event>
+
+     stop on runtime events like signals or exceptions.
+
+     i.e. catch throw, catch signal SIGSEGV
+
+delete <break num>
+     deletes the breakpoint at break num
+
+disable <break num>
+     disables the breakpoint at break num. Will not delete it, 
+     just will be inactive.
+
+enable <break num>
+     enables a previously disabled breakpoint     
+
+
+
+flow control commands
+---------------------
+run
+     This will begin running the program. If the program is already 
+     running, it will reset and run from the beginning instead.\
+
+step
+     After the program has paused (breakpoint etc), this command will
+     continue to run the program 1 line at a time. 
+     When it encounters a function, it will STEP into the function and
+     continue to run 1 line at a time.
+
+next
+     After the program has paused (breakpoint etc), this command will
+     continue to run the program 1 line at a time. 
+     When it encounters a function, it will continue to run without 
+     stepping into the function. It will continue after the function
+     has returned (without leaving the current line in the code).
+     
+     If the function has a breakpoint, it will have to pause, then 
+     continue from that point onwards.
+
+continue
+     This will continue running the program normally until another 
+     breakpoint or condition is met to pause the program.
+
+until <location>
+     Run in the same function until reaching a specific location.
+
+     If no location is provided, it will continue until the function
+     returns, or the next loop iteration.
+
+advance <location>
+     Runs the program until it reaches the specified location.
+     This will NOT stop for any other breakpoints, but will still
+     stop for watchpoints.
+
+jump <location>
+     Jumps to a manual location
+
+finish
+     continues execution until the current function returns
+     This is helpful for iterating functions such as memset
+     Does NOT skip over watch points though...
+
+variable tracking commands
+--------------------------
+display <expression>
+     prints the expression during every pause
+     this command uses ',' to add multiple variables at once
+     
+     i.e. print variables a, b, and c during every pause
+          display a,b,c
+
+print <expr>
+     prints out the specific expression
+
+info <option>
+     display : view all expressions which are set to display
+     breakpoints: all breakpoints
+     locals: all local variables
+     args: all arguments to the current function
+
+tui <option>
+     enable: opens the TUI window
+     disable: closes TUI window
+    
+    
+untracking
+-----------
+delete
+    Running delete by itself will remove all breakpoints and watchpoints
+
+undisplay
+    This will remove all auto-display expressions
+
+
+Running External Commands inside gdb
+-------------------------------------
+shell <command>
+    runs the command on the shell without closing gdb
+    
+    i.e. clear the screen
+        shell clear
+
+    Note: ! is the shortcut for shell, so you can run the same command as
+        ! clear
+
