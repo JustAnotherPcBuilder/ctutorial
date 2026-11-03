@@ -8,8 +8,8 @@ void jump_base(char *out, char *num, int base, int obase);
 int main(int argc, char **argv)
 {
     bool continuing = true;
-    char num[128];
-    char out[128];
+    char num[128] = {0};
+    char out[128] = {0};
 
     while(continuing){
         continuing = false;
@@ -52,7 +52,7 @@ bool valid_inputs(char *num, int base){
     if(base > 10)
         max = base + 'A' - 11;
     
-    for(int i = 0; num[i] != '\0' || i < 128; i++){
+    for(int i = 0; num[i] != '\0' && i < 128; i++){
         if(num[i] - max > 0)
             return false;
     }
@@ -61,44 +61,47 @@ bool valid_inputs(char *num, int base){
 }
 
 void jump_base(char *out, char *num, int base, int obase){
+
+    memset(out, 0, 128);
+    int len = (int) strlen(num);
+
     if(base == obase){
         printf("Already same base!\n");
+        strncpy(out, num, len);
         return;
     }
 
     int value = 0;
-    int len = strlen(num);
-    memset(out, 0, 128);
 
     // Compute the value from your given base
-    for(int i = 0; i != '\0' || i < 128; i++){
-        int b = base;
-        for (int j = 0; j < len; j++)
-            b *= base;
-
-        int n = num[i] - '0';
-        if(n > 9)
-            n = num[i] - 'A' + 10;
-        value += b * num[i];
-        len--;
+    int b = 1;
+    for(int i = len - 1 ; i >= 0 ; i--){
+        if((num[i] - '0') > 9)
+            value += b * (num[i] - 'A' + 10);
+        else
+            value += b * (num[i] - '0');
+        
+        b *= base;
     }
 
     // Convert the integer value to an output
-    for(int i = 0; value > 0|| i < 128; i++){
-        int b = base;
-        for(int j = 0; j < i; j++)
-            b *= base;
-        int remainder = value / b;
-        value -= remainder;
-        
-        out[i] = remainder + '0';
-        if(remainder > 10)
-            out[i] = remainder + 'A' - 10;
+    b = 1;
+    while(b < value){
+        b *= obase;
     }
-    len = strlen(out);
-    for(int i = 0; i < len / 2; i++){
-        char tmp = out[i];
-        out[i] = out[len - i - 1];
-        out[len - i - 1] = tmp;
+    b /= obase;
+    for(int i = 0; value >= 0 && i < 128; i++){
+        if(value == 0){
+            out[i] = '0';
+            break;
+        }
+        out[i] = (value / b);
+        if(out[i] > 10)
+            out[i] += 'A' - 10;
+        else
+            out[i] += '0';
+        value %= b;
+        b /= obase;
     }
+    
 }
