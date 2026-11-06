@@ -4,14 +4,9 @@ file = "dictionary.json"
 
 with open(file, "r") as f:
     dictionary = json.load(f)
-pprint.pprint(dictionary)
-exit()
-words = list(dictionary.keys())
+words = [ word for word in list(dictionary.keys()) if not word.startswith('-') ]
 words.sort()
 
-pprint.pprint(words)
-
-exit()
 conn = sqlite3.connect("dictionary.db")
 cursor = conn.cursor()
 
