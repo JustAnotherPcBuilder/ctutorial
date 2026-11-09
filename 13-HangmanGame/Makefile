@@ -2,6 +2,7 @@
 
 CC = gcc
 CFLAGS = -Wall -g -Iinclude
+LFLAGS = -lsqlite3
 
 SRCS := $(notdir $(wildcard *.c))
 TARGETS :=  $(SRCS:.c=)
@@ -15,7 +16,7 @@ all:
 build: $(TARGETS)
 
 %:
-	$(CC) $(CFLAGS) $@.c -o $@
+	$(CC) $(CFLAGS) $@.c -o $@ $(LFLAGS)
 
 new-%:
 	@if [ ! -f "$*.c" ]; then \
