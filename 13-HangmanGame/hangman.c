@@ -12,17 +12,21 @@
 #define MAX_WORDS 85948
 #define DATABASE_FILE "dictionary.db"
 
+int initialize_database(sqlite3 **p_db, sqlite3_stmt **p_stmt);
+int get_word_from_database(const unsigned char **word_ptr, sqlite3 *db, sqlite3_stmt *stmt, int row_id);
+
 int main(){
 
     sqlite3 *db;        // database
     sqlite3_stmt *stmt; // statement
-    int rc;             // return code
-    char *word;
-    int id;
+    const unsigned char *word = NULL;
+    int id = 89;
 
     initialize_database(&db, &stmt);
     get_word_from_database(&word, db, stmt, id);
-    
+    if(word != NULL){
+        printf("%s\n", word);
+    }
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
@@ -47,7 +51,7 @@ int initialize_database(sqlite3 **p_db, sqlite3_stmt **p_stmt){
 
     printf("Successfully opened database.\n");
 
-    const char *sql_query = "SELECT * FROM words WHERE rowid = ?"
+    const char *sql_query = "SELECT * FROM words WHERE rowid = ?";
     rc = sqlite3_prepare_v2(db, sql_query, -1, p_stmt, NULL);
 
     if(rc != SQLITE_OK){
@@ -59,13 +63,14 @@ int initialize_database(sqlite3 **p_db, sqlite3_stmt **p_stmt){
     return rc;
 }
 
-int get_word_from_database(char **word_ptr, sqlite3 *db, sqlite3_stmt *stmt, int row_id){
+int get_word_from_database(const unsigned char **word_ptr, sqlite3 *db, sqlite3_stmt *stmt, int row_id){
     // Binding index 1 to variable 1, which should be an int
     // This is needed when using multiple ? parameters in a query
     // Since only a single ? is needed, only Index Parameter 1 is used
-    sqlite3_bind_int(stmt, 1, num);
+    int rc;
+    rc = sqlite3_reset(stmt);
+    rc = sqlite3_bind_int(stmt, 1, row_id);
     rc = sqlite3_step(stmt);
-    sqlite3_reset(stmt);
 
     switch(rc){
         case SQLITE_ROW:
@@ -75,7 +80,7 @@ int get_word_from_database(char **word_ptr, sqlite3 *db, sqlite3_stmt *stmt, int
 
         case SQLITE_DONE:
             // This should occur only when database stepped through several times
-            fprintf(stderr, "No match found! Row ID: %d\n", num);
+            fprintf(stderr, "No match found! Row ID: %d\n", row_id);
             return 1;
 
         default:
