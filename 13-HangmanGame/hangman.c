@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <sqlite3.h>
+#include "lca_random.h"
 
 #define MAX_WORDS 85948
 #define DATABASE_FILE "dictionary.db"
@@ -20,7 +21,7 @@ int main(){
     sqlite3 *db;        // database
     sqlite3_stmt *stmt; // statement
     const unsigned char *word = NULL;
-    int id = 89;
+    int id = random_int(1, MAX_WORDS);
 
     initialize_database(&db, &stmt);
     get_word_from_database(&word, db, stmt, id);
