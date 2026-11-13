@@ -1,0 +1,14 @@
+****** Hangman ******
+ -----
+|     |
+|     0
+|    \
+|
+|
+|
+*********************
+[_][A][_][_][_][A][_]
+
+Your Guesses: A, I, O
+Lives Remaining: 5/7
+Guess a letter: _

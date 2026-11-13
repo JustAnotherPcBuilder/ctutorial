@@ -28,6 +28,11 @@ int main(){
     if(word != NULL){
         printf("%s\n", word);
     }
+
+    // Clear the Screen
+    // printf("\033[2J\033[H");
+    // fflush(stdout);
+    
     sqlite3_finalize(stmt);
     sqlite3_close(db);
 
