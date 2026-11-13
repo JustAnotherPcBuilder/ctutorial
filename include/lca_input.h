@@ -1,5 +1,5 @@
-#ifndef __LCA_INPUT__
-#define __LCA_INPUT__
+#ifndef __LCA_INPUT_H_
+#define __LCA_INPUT_H_
 
 #include <limits.h>
 #include <ctype.h>
