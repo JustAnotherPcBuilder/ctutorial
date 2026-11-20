@@ -9,9 +9,9 @@
 #include <stdio.h>
 #include <sqlite3.h>
 #include "lca_random.h"
+#include "engine.c"
 
-#define MAX_WORDS 85948
-#define DATABASE_FILE "dictionary.db"
+#define DATABASE_FILE   "dictionary.db"
 
 int initialize_database(sqlite3 **p_db, sqlite3_stmt **p_stmt);
 int get_word_from_database(const unsigned char **word_ptr, sqlite3 *db, sqlite3_stmt *stmt, int row_id);

@@ -6,6 +6,13 @@ with open(file, "r") as f:
     dictionary = json.load(f)
 words = [ word for word in list(dictionary.keys()) if not word.startswith('-') ]
 words.sort()
+max = 0
+for word in words:
+    if len(word) > max:
+        max = len(word)
+
+print(max)
+exit()
 
 conn = sqlite3.connect("dictionary.db")
 cursor = conn.cursor()
