@@ -17,8 +17,9 @@ Guess a letter: _
 */
 #include <stdlib.h>
 
-#define MAX_WORD_LENGTH 35
-#define MAX_WORDS       85948
+#define MAX_WORD_LENGTH  35
+#define MAX_WORDS        85948
+#define ALPHABET_LETTERS 26
 
 // Keep track of words used from dictionary
 char *selected_words = (char *)calloc(sizeof(char), MAX_WORDS);
@@ -45,7 +46,7 @@ int letter_to_index(char ch){
  * Creates data-structure of letters with number to update string
  */
 int init_word(int id, char *word){
-    if(id <= 0){
+    if(id <= 0 || id > MAX_WORDS){
         fprintf(stderr, "Invalid id entered: %d.\n", id);
         return 1;
     }
@@ -54,10 +55,30 @@ int init_word(int id, char *word){
         return 1;
     }
 
+    if(selected_words[id] == 1){
+        // Need to specify an error code for word taken to avoid using
+        // the same words. Perhaps an enum or #define
+        return 2;
+    }
+
+    // Add id to selected_words
+    selected_words[id] = 1;
+
     int len = strlen(word);
+    char letters[ALPHABET_LETTERS] = {0};
+    char ch;
+
     for(int i = 0; i < len; i++){
 
+        if((ch = letter_to_index(word[i])) < 0){
+
+            //This is an invalid/non-alphabet character
+        }else{
+            letters[ch]++;
+        }
+
     }
+    // letters[] now contains number of characters in the word
     
 } 
 
